@@ -3,9 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        input {
+            display: block;
+        }
+    </style>
 </head>
 <body>
 <th:block th:replace="common/header.html :: header"></th:block>
     <h2>로그인페이지</h2>
+    <form action="/member/login" method="post">
+        이메일 <input type="text" name="memberEmail">
+        비밀번호 <input type="text" name="memberPassword">
+        <input type="submit" value="로그인">
+    </form>
 </body>
 </html>

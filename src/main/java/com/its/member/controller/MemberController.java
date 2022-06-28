@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Controller
@@ -26,6 +27,29 @@ public class MemberController {
     public String save(@ModelAttribute MemberDTO memberDTO) throws IOException {
         ms.save(memberDTO);
         return "member/login";
+    }
+
+    @GetMapping("/login-form")
+    public String loginForm() {
+        return "member/login";
+    }
+
+    @PostMapping("/login")
+    public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session) {
+        MemberDTO loginDTO = ms.loginCheck(memberDTO);
+        if (loginDTO != null) {
+            session.setAttribute("loginId", loginDTO.getId());
+            session.setAttribute("loginEmail", loginDTO.getMemberEmail());
+            return "index";
+        } else {
+            return "member/login";
+        }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "index";
     }
 
 }

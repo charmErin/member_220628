@@ -31,6 +31,18 @@ public class MemberTest {
 //        assertThat(ms.findById(id)).isNotNull();
 //    }
 
+    @Test
+    @Transactional
+    @Rollback(value = true)
+    @DisplayName("login 테스트")
+    public void loginTest() {
+        MemberDTO memberDTO = new MemberDTO();
+        memberDTO.setMemberEmail("admin");
+        memberDTO.setMemberPassword("admin");
+        assertThat(ms.loginCheck(memberDTO)).isNotNull();
+    }
+
+
 
 
 }

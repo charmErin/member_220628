@@ -16,19 +16,37 @@
         #header {
             background-color: pink;
             width: 100%;
-            height: 50px;
+            height: 80px;
+        }
+
+        #header .navi_1 {
+            display: flex;
+            width: 230px;
+            height: 80px;
+            justify-content: end;
+            margin-left: auto;
+            margin-right: 200px;
+        }
+
+        .navi_1 li {
+            flex: 1;
+            text-align: center;
+            margin: auto;
+            font-size: large;
+            font-weight: bold;
         }
     </style>
 
     <div id="header">
-        <ul th:if="${session.loginEmail}">
-            <li><a href="#">로그아웃</a></li>
+        <ul class="navi_1" th:if="${session.loginEmail}">
+            <li><a href="/member/logout">로그아웃</a></li>
+            <li><a href="#">글목록</a></li>
 
             <li th:if="${session.loginEmail.toString().equals('admin')}">
-                관리자페이지입니다.
+                관리자 페이지 입니다.
             </li>
         </ul>
-        <ul th:unless="${session.loginEmail}">
+        <ul class="navi_1" th:unless="${session.loginEmail}">
             <li><a href="/member/save-form">회원가입</a></li>
             <li><a href="/member/login-form">로그인</a></li>
         </ul>

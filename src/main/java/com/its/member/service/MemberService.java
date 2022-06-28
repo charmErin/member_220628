@@ -39,4 +39,20 @@ public class MemberService {
         }
     }
 
+    public MemberDTO loginCheck(MemberDTO memberDTO) {
+        Optional<Member> optionalMember = mr.findByMemberEmail(memberDTO.getMemberEmail());
+        if (optionalMember.isPresent()) {
+            if (memberDTO.getMemberPassword().equals(optionalMember.get().getMemberPassword())) {
+                return MemberDTO.toMemberDTO(optionalMember.get());
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+
+
+
 }
