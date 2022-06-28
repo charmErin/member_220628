@@ -9,6 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -67,5 +69,14 @@ public class MemberService {
 
     public void delete(Long id) {
         mr.deleteById(id);
+    }
+
+    public List<MemberDTO> findAll() {
+        List<Member> memberList = mr.findAll();
+        List<MemberDTO> memberDTOList = new ArrayList<>();
+        for (Member m: memberList) {
+            memberDTOList.add(MemberDTO.toMemberDTO(m));
+        }
+        return memberDTOList;
     }
 }

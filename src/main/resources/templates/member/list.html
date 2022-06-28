@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<th:block th:replace="common/header.html :: header"></th:block>
+    <h2>회원목록</h2>
+    <table>
+        <tr>
+            <th>회원번호</th>
+            <th>이메일</th>
+            <th>이름</th>
+            <th>전화번호</th>
+        </tr>
+        <tr th:each="member: ${memberList}">
+            <td th:onclick="memberDetail([[${member.id}]])" th:text="${member.id}"></td>
+            <td th:onclick="memberDetail([[${member.id}]])" th:text="${member.memberEmail}"></td>
+            <td th:text="${member.memberName}"></td>
+            <td th:text="${member.memberMobile}"></td>
+        </tr>
+    </table>
+</body>
+<script th:inline="javascript">
+    const memberDetail = (id) => {
+        location.href = "/member/" + id;
+    }
+</script>
+</html>

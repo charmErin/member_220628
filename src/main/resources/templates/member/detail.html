@@ -21,6 +21,10 @@
             <th>이메일</th>
             <td th:text="${member.memberEmail}"></td>
         </tr>
+        <tr th:if="${session.loginEmail.toString().equals('관리자')}">
+            <th>비밀번호</th>
+            <td th:text="${member.memberPassword}"></td>
+        </tr>
         <tr>
             <th>이름</th>
             <td th:text="${member.memberName}"></td>
@@ -31,9 +35,14 @@
         </tr>
     </table>
 
-    <button th:if="${session.loginEmail} and ${!session.loginEmail.toString().equals('admin')}"
-            th:onclick="memberUpdate()">정보수정</button>
-    <button th:onclick="memberDelete()">회원탈퇴</button>
+    <div th:if="${session.loginEmail} and ${!session.loginEmail.toString().equals('admin')}">
+        <button th:onclick="memberUpdate()">정보수정</button>
+        <button th:onclick="memberDelete()">회원탈퇴</button>
+    </div>
+    <div th:if="${session.loginEmail} and ${session.loginEmail.toString().equals('admin')}">
+        <button th:onclick="memberList()">회원목록</button>
+        <button th:onclick="memberDelete()">회원삭제</button>
+    </div>
 </body>
 <script th:inline="javascript">
     const memberUpdate = () => {
@@ -47,6 +56,10 @@
             alert("탈퇴(삭제) 되었습니다.");
             location.href = "/member/delete/" + id;
         }
+    }
+
+    const memberList = () => {
+        location.href = "/member/";
     }
 </script>
 </html>

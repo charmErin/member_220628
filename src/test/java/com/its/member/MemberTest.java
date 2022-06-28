@@ -70,7 +70,14 @@ public class MemberTest {
         assertThat(ms.findById(1L)).isNull();
     }
 
-
+    @Test
+    @Transactional
+    @Rollback(value = true)
+    @DisplayName("findAll 테스트")
+    public void findAllTest() {
+        // 현재 회원수는 2명
+        assertThat(ms.findAll().size()).isEqualTo(2);
+    }
 
 
 }

@@ -80,4 +80,16 @@ public class MemberController {
         }
     }
 
+    // 관리자 페이지
+    @GetMapping("/admin")
+    public String adminPage() {
+        return "member/admin";
+    }
+
+    @GetMapping("/")
+    public String findAll(Model model) {
+        model.addAttribute("memberList", ms.findAll());
+        return "member/list";
+    }
+
 }
