@@ -42,7 +42,13 @@ public class MemberTest {
         assertThat(ms.loginCheck(memberDTO)).isNotNull();
     }
 
-
+    @Test
+    @Transactional
+    @Rollback(value = true)
+    @DisplayName("findById 테스트")
+    public void findByIdTest() {
+        assertThat(ms.findById(1L)).isNotNull();
+    }
 
 
 }

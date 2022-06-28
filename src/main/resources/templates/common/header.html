@@ -21,7 +21,7 @@
 
         #header .navi_1 {
             display: flex;
-            width: 230px;
+            width: 450px;
             height: 80px;
             justify-content: end;
             margin-left: auto;
@@ -35,18 +35,35 @@
             font-size: large;
             font-weight: bold;
         }
+
+        .navi_2 {
+            display: flex;
+            width: 220px;
+            height: 80px;
+            justify-content: end;
+            margin-left: auto;
+            margin-right: 200px;
+        }
+
+        .navi_2 li {
+            flex: 1;
+            text-align: center;
+            margin: auto;
+            font-size: large;
+            font-weight: bold;
+        }
     </style>
 
     <div id="header">
         <ul class="navi_1" th:if="${session.loginEmail}">
             <li><a href="/member/logout">로그아웃</a></li>
+            <li><a th:href="@{|/member/${session.loginId}|}">마이페이지</a></li>
             <li><a href="#">글목록</a></li>
-
             <li th:if="${session.loginEmail.toString().equals('admin')}">
-                관리자 페이지 입니다.
+                관리자페이지
             </li>
         </ul>
-        <ul class="navi_1" th:unless="${session.loginEmail}">
+        <ul class="navi_2" th:unless="${session.loginEmail}">
             <li><a href="/member/save-form">회원가입</a></li>
             <li><a href="/member/login-form">로그인</a></li>
         </ul>
