@@ -13,10 +13,11 @@
 <body>
 <th:block th:replace="common/header.html :: header"></th:block>
     <h2>회원가입</h2>
-    <form action="/member/save" method="post">
+    <form action="/member/save" method="post" enctype="multipart/form-data">
         이메일<input type="text" name="memberEmail">
         비밀번호<input type="password" name="memberPassword">
         이름<input type="text" name="memberName">
+        전화번호<input type="text" name="memberMobile">
         프로필사진<input type="file" name="memberProfile">
         <input type="submit" value="회원가입">
     </form>

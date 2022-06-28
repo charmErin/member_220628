@@ -12,22 +12,22 @@ import javax.persistence.*;
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "memberId")
+    @Column(name="member_id")
     private Long id;
 
-    @Column(name="memberEmail", length = 20, unique = true)
+    @Column(length = 20, unique = true)
     private String memberEmail;
 
-    @Column(name="memberPassword", length = 10)
+    @Column(length = 10)
     private String memberPassword;
 
-    @Column(name="memberName", length = 10)
+    @Column(length = 10)
     private String memberName;
 
-    @Column(name="memberMobile", length = 20)
+    @Column(length = 20)
     private String memberMobile;
 
-    @Column(name="memberProfileName", length = 80)
+    @Column(length = 80)
     private String memberProfileName;
 
 
