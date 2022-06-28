@@ -56,4 +56,28 @@ public class MemberController {
         return "member/detail";
     }
 
+    @GetMapping("/update-form/{id}")
+    public String updateForm(@PathVariable Long id, Model model) {
+        model.addAttribute("member", ms.findById(id));
+        return "member/update";
+    }
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute MemberDTO memberDTO, Model model) throws IOException {
+        ms.update(memberDTO);
+        return "redirect:/member/" + memberDTO.getId();
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id, HttpSession session) {
+        ms.delete(id);
+        String loginEmail = (String) session.getAttribute("loginEmail");
+        if (loginEmail.equals("관리자")) {
+            return "redirect:/member/";
+        } else {
+            session.invalidate();
+            return "index";
+        }
+    }
+
 }

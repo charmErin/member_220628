@@ -41,4 +41,14 @@ public class Member {
         return member;
     }
 
+    public static Member toUpdateEntity(MemberDTO memberDTO) {
+        Member member = new Member();
+        member.setId(memberDTO.getId());
+        member.setMemberEmail(memberDTO.getMemberEmail());
+        member.setMemberPassword(memberDTO.getMemberPassword());
+        member.setMemberName(memberDTO.getMemberName());
+        member.setMemberMobile(memberDTO.getMemberMobile());
+        member.setMemberProfileName(memberDTO.getMemberProfileName());
+        return member;
+    }
 }

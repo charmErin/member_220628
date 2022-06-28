@@ -50,5 +50,27 @@ public class MemberTest {
         assertThat(ms.findById(1L)).isNotNull();
     }
 
+//    @Test
+//    @Transactional
+//    @Rollback(value = true)
+//    @DisplayName("update 테스트")
+//    public void updateTest() throws IOException {
+//        MemberDTO memberDTO = ms.findById(1L);
+//        memberDTO.setMemberMobile("010-1234-5678");
+//        ms.update(memberDTO);
+//        assertThat(memberDTO.getMemberMobile()).isNotEqualTo(ms.findById(1L).getMemberMobile());
+//    }
+
+    @Test
+    @Transactional
+    @Rollback(value = true)
+    @DisplayName("delete 테스트")
+    public void deleteTest() {
+        ms.delete(1L);
+        assertThat(ms.findById(1L)).isNull();
+    }
+
+
+
 
 }

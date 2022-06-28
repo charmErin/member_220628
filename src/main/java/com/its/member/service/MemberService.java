@@ -53,6 +53,19 @@ public class MemberService {
     }
 
 
+    public void update(MemberDTO memberDTO) throws IOException {
+        MultipartFile updateFile = memberDTO.getMemberProfile();
+        if (!updateFile.isEmpty()) {
+            String updateFileName = updateFile.getOriginalFilename();
+            updateFileName = System.currentTimeMillis() + "_" + updateFileName;
+            String updatePath = "D:\\springboot_img\\" + updateFileName;
+            updateFile.transferTo(new File(updatePath));
+            memberDTO.setMemberProfileName(updateFileName);
+        }
+        mr.save(Member.toUpdateEntity(memberDTO));
+    }
 
-
+    public void delete(Long id) {
+        mr.deleteById(id);
+    }
 }
