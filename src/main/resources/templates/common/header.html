@@ -56,12 +56,12 @@
 
     <div id="header">
         <ul class="navi_1" th:if="${session.loginEmail}">
-            <li><a href="/member/logout">로그아웃</a></li>
-            <li><a th:href="@{|/member/${session.loginId}|}">마이페이지</a></li>
             <li><a href="#">글목록</a></li>
             <li th:if="${session.loginEmail.toString().equals('admin')}">
                 관리자페이지
             </li>
+            <li><a th:href="@{|/member/${session.loginId}|}">마이페이지</a></li>
+            <li><a href="/member/logout">로그아웃</a></li>
         </ul>
         <ul class="navi_2" th:unless="${session.loginEmail}">
             <li><a href="/member/save-form">회원가입</a></li>

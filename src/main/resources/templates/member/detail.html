@@ -42,6 +42,7 @@
     }
 
     const memberDelete = () => {
+        const id = [[${member.id}]];
         if (confirm("탈퇴(삭제)하시겠습니까?")) {
             alert("탈퇴(삭제) 되었습니다.");
             location.href = "/member/delete/" + id;
