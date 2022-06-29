@@ -52,4 +52,22 @@ public class BoardController {
         return "board/detail";
     }
 
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        bs.delete(id);
+        return "redirect:/board";
+    }
+
+    @GetMapping("/update-form/{id}")
+    public String updateForm(@PathVariable Long id, Model model) {
+        model.addAttribute("board", bs.findById(id));
+        return "board/update";
+    }
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute BoardDTO boardDTO) throws IOException {
+        bs.update(boardDTO);
+        return "redirect:/board/detail?id=" + boardDTO.getId();
+    }
+
 }

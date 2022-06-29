@@ -61,12 +61,13 @@
     const boardDelete = () => {
         const id = [[${board.id}]];
         if (confirm("글을 삭제하시겠습니까?")) {
-            location.href = "/board/delete" + id;
+            location.href = "/board/delete/" + id;
         }
     }
 
     const boardUpdate = () => {
-
+        const id = [[${board.id}]];
+        location.href = "/board/update-form/" + id;
     }
 </script>
 </html>

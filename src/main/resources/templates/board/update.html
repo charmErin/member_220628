@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        input {
+            display: block;
+        }
+        textarea {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<th:block th:replace="common/header.html :: header"></th:block>
+    <h2>글 수정</h2>
+    <form action="/board/update" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" th:value="${board.id}">
+        <input type="text" name="boardTitle" th:value="${board.boardTitle}">
+        <input type="hidden" name="boardWriter" th:value="${board.boardWriter}">
+        <textarea name="boardContents" cols="50" rows="10" th:text="${board.boardContents}"></textarea>
+        <input type="hidden" name="boardHits" th:value="${board.boardHits}">
+        <div th:if="${board.boardFileName}">
+            현재 첨부파일 <input type="hidden" name="boardFileName" th:value="${board.boardFileName}">
+            <img th:src="@{|/upload/${board.boardFileName}|}" width="100" height="100">
+        </div>
+        변경할 첨부파일 <input type="file" name="boardFile">
+        <input type="submit" value="수정">
+    </form>
+</body>
+</html>

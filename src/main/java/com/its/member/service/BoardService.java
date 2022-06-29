@@ -2,6 +2,7 @@ package com.its.member.service;
 
 import com.its.member.common.PagingConst;
 import com.its.member.dto.BoardDTO;
+import com.its.member.dto.MemberDTO;
 import com.its.member.entity.Board;
 import com.its.member.entity.Member;
 import com.its.member.repository.BoardRepository;
@@ -64,5 +65,22 @@ public class BoardService {
                                         board.getCreatedTime(), board.getBoardFileName())
         );
         return boardDTOList;
+    }
+
+    public void delete(Long id) {
+        br.deleteById(id);
+    }
+
+    public void update(BoardDTO boardDTO) throws IOException {
+        MultipartFile updateFile = boardDTO.getBoardFile();
+        if (!updateFile.isEmpty()) {
+            String updateFileName = updateFile.getOriginalFilename();
+            updateFileName = System.currentTimeMillis() + "_" + updateFileName;
+            String updatePath = "D:\\springboot_img\\" + updateFileName;
+            updateFile.transferTo(new File(updatePath));
+            boardDTO.setBoardFileName(updateFileName);
+        }
+        Member member = mr.findByMemberEmail(boardDTO.getBoardWriter()).get();
+        br.save(Board.toUpdateEntity(boardDTO, member));
     }
 }

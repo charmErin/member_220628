@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.*;
@@ -99,6 +100,17 @@ public class TestClass {
     public void boardFindAll() {
         // 현재 게시글 7개
 //        assertThat(bs.findAll().size()).isEqualTo(7);
+
+    }
+
+    @Test
+    @Transactional
+    @Rollback(value = true)
+    @DisplayName("board_delete 테스트")
+    public void boardDeleteTest() {
+        // 9번 글 삭제 확인
+        bs.delete(9L);
+        assertThat(bs.findById(9L)).isNull();
     }
 
 }
