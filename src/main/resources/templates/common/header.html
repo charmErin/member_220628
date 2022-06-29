@@ -57,7 +57,7 @@
     <div id="header">
         <ul class="navi_1" th:if="${session.loginEmail}">
             <li><a href="/board/save-form">글작성</a></li>
-            <li><a href="#">글목록</a></li>
+            <li><a href="/board">글목록</a></li>
             <li th:if="${session.loginEmail.toString().equals('admin')}">
                 <a href="/member/admin">관리자페이지</a>
             </li>

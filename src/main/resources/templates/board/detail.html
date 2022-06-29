@@ -18,11 +18,11 @@
         </tr>
         <tr>
             <th>작성일</th>
-            <td th:text="${board.boardCreatedTime}"></td>
+            <td th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
         </tr>
-        <tr th:if="${!board.boardCreatedTime.equals('')}">
+        <tr th:if="${board.boardCreatedTime}">
             <th>마지막수정일</th>
-            <td th:text="${board.boardUpdatedTime}"></td>
+            <td th:text="*{#temporals.format(board.boardUpdatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
         </tr>
         <tr>
             <th>조회수</th>
@@ -30,22 +30,43 @@
         </tr>
         <tr>
             <th>내용</th>
-            <th th:text="${board.boardContents}"></th>
+            <td th:text="${board.boardContents}"></td>
         </tr>
         <tr th:if="${board.boardFileName}">
             <th>첨부파일</th>
             <td><img th:src="@{|/upload/${board.boardFileName}|}" width="100" height="100"></td>
         </tr>
     </table>
-    <div th:if="${session.loginEmail.equals(board.boardWriter)}">
-        <div th:if="${session.loginEmail.equals('admin')}">
-            <button>삭제</button>
+    <div th:if="${#strings.equals(session.loginEmail, board.boardWriter)}">
+        <div th:if="${session.loginEmail.toString().equals('admin')}">
+            <button th:onclick="boardDelete()">삭제</button>
+            <button th:onclick="goBack([[${page}]])">글목록</button>
         </div>
-        <div th:unless="${session.loginEmail.equals('admin')}">
-            <button>수정</button>
-            <button>삭제</button>
+        <div th:unless="${session.loginEmail.toString().equals('admin')}">
+            <button th:onclick="boardUpdate()">수정</button>
+            <button th:onclick="boardDelete()">삭제</button>
+            <button th:onclick="goBack([[${page}]])">글목록</button>
         </div>
+    </div>
+    <div th:unless="${#strings.equals(session.loginEmail, board.boardWriter)}">
+        <button th:onclick="goBack([[${page}]])">글목록</button>
     </div>
 
 </body>
+<script th:inline="javascript">
+    const goBack = (page) => {
+        location.href = "/board?page=" + page;
+    }
+
+    const boardDelete = () => {
+        const id = [[${board.id}]];
+        if (confirm("글을 삭제하시겠습니까?")) {
+            location.href = "/board/delete" + id;
+        }
+    }
+
+    const boardUpdate = () => {
+
+    }
+</script>
 </html>
