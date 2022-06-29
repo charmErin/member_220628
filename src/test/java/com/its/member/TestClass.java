@@ -93,15 +93,15 @@ public class TestClass {
     }
 
 
-    @Test
-    @Transactional
-    @Rollback(value = true)
-    @DisplayName("board_findAll 테스트")
-    public void boardFindAll() {
-        // 현재 게시글 7개
+//    @Test
+//    @Transactional
+//    @Rollback(value = true)
+//    @DisplayName("board_findAll 테스트")
+//    public void boardFindAll() {
+//        // 현재 게시글 7개
 //        assertThat(bs.findAll().size()).isEqualTo(7);
-
-    }
+//
+//    }
 
     @Test
     @Transactional
