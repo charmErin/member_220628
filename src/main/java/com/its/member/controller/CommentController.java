@@ -20,9 +20,10 @@ public class CommentController {
         return cs.findAll(commentDTO.getBoardId());
     }
 
-    @DeleteMapping("/{id}")
-    public @ResponseBody List<CommentDTO> delete(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public @ResponseBody List<CommentDTO> delete(@PathVariable Long id,
+                                                 @RequestParam Long boardId) {
         cs.delete(id);
-        return cs.findAll(id);
+        return cs.findAll(boardId);
     }
 }

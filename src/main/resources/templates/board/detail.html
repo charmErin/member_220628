@@ -154,13 +154,15 @@
     }
 
     const commentDelete = (id) => {
+        const boardId = [[${board.id}]];
         const commentWriter = [[${session.loginEmail}]];
         const commentList = document.getElementById("comment_list");
 
         $.ajax({
-            type: "delete",
+            type: "get",
             url: "/comment/" + id,
             dataType: "json",
+            data: {"boardId": boardId},
             success: function (result) {
                 let output = '';
                 output += '<table><tr>'
