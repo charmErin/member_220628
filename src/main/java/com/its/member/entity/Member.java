@@ -1,10 +1,13 @@
 package com.its.member.entity;
 
+import com.its.member.dto.BoardDTO;
 import com.its.member.dto.MemberDTO;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -29,6 +32,14 @@ public class Member {
 
     @Column(length = 80)
     private String memberProfileName;
+
+    @OneToMany(mappedBy = "member")
+    List<Board> boardList = new ArrayList<>();
+
+    @PreRemove
+    private void preRemove() {
+        boardList.forEach(board -> board.setMember(null));
+    }
 
 
     public static Member toSaveEntity(MemberDTO memberDTO) {

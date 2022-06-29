@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<th:block th:replace="common/header.html :: header"></th:block>
+    <h2>글상세화면</h2>
+    <table>
+        <tr>
+            <th>제목</th>
+            <td colspan="2" th:text="${board.boardTitle}"></td>
+        </tr>
+        <tr>
+            <th>작성자</th>
+            <td th:text="${board.boardWriter}"></td>
+        </tr>
+        <tr>
+            <th>작성일</th>
+            <td th:text="${board.boardCreatedTime}"></td>
+        </tr>
+        <tr th:if="${!board.boardCreatedTime.equals('')}">
+            <th>마지막수정일</th>
+            <td th:text="${board.boardUpdatedTime}"></td>
+        </tr>
+        <tr>
+            <th>조회수</th>
+            <td th:text="${board.boardHits}"></td>
+        </tr>
+        <tr>
+            <th>내용</th>
+            <th th:text="${board.boardContents}"></th>
+        </tr>
+        <tr th:if="${board.boardFileName}">
+            <th>첨부파일</th>
+            <td><img th:src="@{|/upload/${board.boardFileName}|}" width="100" height="100"></td>
+        </tr>
+    </table>
+    <div th:if="${session.loginEmail.equals(board.boardWriter)}">
+        <div th:if="${session.loginEmail.equals('admin')}">
+            <button>삭제</button>
+        </div>
+        <div th:unless="${session.loginEmail.equals('admin')}">
+            <button>수정</button>
+            <button>삭제</button>
+        </div>
+    </div>
+
+</body>
+</html>
