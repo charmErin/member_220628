@@ -42,13 +42,9 @@ public class MemberService {
     }
 
     public MemberDTO loginCheck(MemberDTO memberDTO) {
-        Optional<Member> optionalMember = mr.findByMemberEmail(memberDTO.getMemberEmail());
-        if (optionalMember.isPresent()) {
-            if (memberDTO.getMemberPassword().equals(optionalMember.get().getMemberPassword())) {
-                return MemberDTO.toMemberDTO(optionalMember.get());
-            } else {
-                return null;
-            }
+        MemberDTO findDTO = findByMemberEmail(memberDTO.getMemberEmail());
+        if (memberDTO.getMemberPassword().equals(findDTO.getMemberPassword())) {
+            return findDTO;
         } else {
             return null;
         }
@@ -78,5 +74,14 @@ public class MemberService {
             memberDTOList.add(MemberDTO.toMemberDTO(m));
         }
         return memberDTOList;
+    }
+
+    public MemberDTO findByMemberEmail(String memberEmail) {
+        Optional<Member> optionalMember = mr.findByMemberEmail(memberEmail);
+        if (optionalMember.isPresent()) {
+            return MemberDTO.toMemberDTO(optionalMember.get());
+        } else {
+            return null;
+        }
     }
 }

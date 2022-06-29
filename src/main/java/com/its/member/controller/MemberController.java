@@ -27,6 +27,17 @@ public class MemberController {
         return "member/login";
     }
 
+    @PostMapping("/dup-check")
+    public @ResponseBody String dupIdCheck(@RequestParam String memberEmail) {
+        MemberDTO dupResult = ms.findByMemberEmail(memberEmail);
+        if (dupResult == null) {
+            return "ok";
+        } else {
+            return "no";
+        }
+    }
+
+
     @GetMapping("/login-form")
     public String loginForm() {
         return "member/login";

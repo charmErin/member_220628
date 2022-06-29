@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
@@ -15,11 +16,39 @@
     <h2>회원가입</h2>
     <form action="/member/save" method="post" enctype="multipart/form-data">
         프로필사진<input type="file" name="memberProfile">
-        이메일<input type="text" name="memberEmail">
+        이메일<input type="text" name="memberEmail" id="memberEmail" th:onblur="dupCheck()">
+        <p id="dup_id_check"></p>
         비밀번호<input type="password" name="memberPassword">
         이름<input type="text" name="memberName">
         전화번호<input type="text" name="memberMobile">
         <input type="submit" value="회원가입">
     </form>
 </body>
+<script th:inline="javascript">
+    const dupCheck = () => {
+        const memberEmail = document.getElementById("memberEmail").value;
+        const dupIdCheck = document.getElementById("dup_id_check");
+
+        $.ajax({
+            type: "post",
+            url: "/member/dup-check",
+            data: {"memberEmail": memberEmail},
+            dataType: "text",
+            success: function (result) {
+                if (result == "ok") {
+                    if (memberEmail != null) {
+                        dupIdCheck.innerHTML = "필수입력입니다.";
+                        dupIdCheck.style.color = "dodgerblue";
+                    }else {
+                        dupIdCheck.innerHTML = "사용가능한 아이디입니다.";
+                        dupIdCheck.style.color = "blue";
+                    }
+                } else {
+                    dupIdCheck.innerHTML = "이미 사용중인 아이디입니다.";
+                    dupIdCheck.style.color = "red";
+                }
+            }
+        });
+    }
+</script>
 </html>
