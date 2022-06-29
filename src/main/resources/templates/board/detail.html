@@ -1,8 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .comment_form {
+            display: flex;
+            width: 200px;
+            height: 30px;
+        }
+        .comment_form input:not(:last-child) {
+            flex: 1;
+        }
+    </style>
 </head>
 <body>
 <th:block th:replace="common/header.html :: header"></th:block>
@@ -52,6 +63,36 @@
         <button th:onclick="goBack([[${page}]])">글목록</button>
     </div>
 
+    <h2>댓글</h2>
+    <div class="comment_form">
+        <input type="text" id="commentContents">
+        <input type="button" th:onclick="commentSave()" value="등록">
+    </div>
+    <div id="comment_list">
+        <table>
+            <tr>
+                <th>댓글번호</th>
+                <th>내용</th>
+                <th>작성자</th>
+                <th>작성일</th>
+                <th></th>
+            </tr>
+            <tr th:each="comment: ${commentList}">
+                <td th:text="${comment.id}"></td>
+                <td th:text="${comment.commentWriter}"></td>
+                <td th:text="${comment.commentContents}"></td>
+                <td th:text="${comment.commentCreatedTime}"></td>
+                <div th:if="${#strings.equals(session.loginEmail, comment.commentWriter)}">
+                    <td th:if="${session.loginEmail.toString().equals('admin')}">
+                        <button th:onclick="commentDelete([[${comment.id}]])">삭제</button>
+                    </td>
+                    <td th:unless="${session.loginEmail.toString().equals('admin')}">
+                        <button th:onclick="commentDelete([[${comment.id}]])">삭제</button>
+                    </td>
+                </div>
+            </tr>
+        </table>
+    </div>
 </body>
 <script th:inline="javascript">
     const goBack = (page) => {
@@ -68,6 +109,86 @@
     const boardUpdate = () => {
         const id = [[${board.id}]];
         location.href = "/board/update-form/" + id;
+    }
+
+    const commentSave = () => {
+        const boardId = [[${board.id}]];
+        const commentWriter = [[${session.loginEmail}]];
+        const commentContents = document.querySelector("#commentContents").value;
+        const commentList = document.getElementById("comment_list");
+
+        $.ajax({
+            type: "post",
+            url: "/comment/save",
+            data: {"boardId": boardId, "commentWriter": commentWriter, "commentContents": commentContents},
+            dataType: "json",
+            success: function (result) {
+                let output = '';
+                    output += '<table><tr>'
+                            + '<th>댓글번호</th>'
+                            + '<th>내용</th>'
+                            + '<th>작성자</th>'
+                            + '<th>작성일</th><th></th></tr>';
+
+                for (let i in result) {
+                    output += '<tr><td>' + result[i].id + '</td>'
+                            + '<td>' + result[i].commentWriter + '</td>'
+                            + '<td>' + result[i].commentContents + '</td>'
+                            + '<td>' + result[i].commentCreatedTime + '</td>';
+                            if (commentWriter == result[i].commentWriter) {
+                                output += '<div>'
+                                    if (commentWriter == 'admin') {
+                                        output += '<td>' + '<button onclick="commentDelete(' + result[i].id + ')">삭제</button></td>';
+                                    } else {
+                                        output += '<td>' + '<button onclick="commentDelete(' + result[i].id + ')">삭제</button></td>';
+                                    }
+                                output += '</div></tr>';
+                            }
+                }
+                output += '</table>';
+
+                commentList.innerHTML = output;
+                document.getElementById(commentContents).value = "";
+            }
+        });
+    }
+
+    const commentDelete = (id) => {
+        const commentWriter = [[${session.loginEmail}]];
+        const commentList = document.getElementById("comment_list");
+
+        $.ajax({
+            type: "delete",
+            url: "/comment/" + id,
+            dataType: "json",
+            success: function (result) {
+                let output = '';
+                output += '<table><tr>'
+                    + '<th>댓글번호</th>'
+                    + '<th>내용</th>'
+                    + '<th>작성자</th>'
+                    + '<th>작성일</th><th></th></tr>';
+
+                for (let i in result) {
+                    output += '<tr><td>' + result[i].id + '</td>'
+                        + '<td>' + result[i].commentWriter + '</td>'
+                        + '<td>' + result[i].commentContents + '</td>'
+                        + '<td>' + result[i].commentCreatedTime + '</td>';
+                    if (commentWriter == result[i].commentWriter) {
+                        output += '<div>';
+                        if (commentWriter == 'admin') {
+                            output += '<td>' + '<button onclick="commentDelete(' + result[i].id + ')">삭제</button></td>';
+                        } else {
+                            output += '<td>' + '<button onclick="commentDelete(' + result[i].id + ')">삭제</button></td>';
+                        }
+                        output += '</div></tr>';
+                    }
+                }
+                output += '</table>';
+
+                commentList.innerHTML = output;
+            }
+        });
     }
 </script>
 </html>

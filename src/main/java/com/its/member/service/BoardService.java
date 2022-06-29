@@ -2,7 +2,6 @@ package com.its.member.service;
 
 import com.its.member.common.PagingConst;
 import com.its.member.dto.BoardDTO;
-import com.its.member.dto.MemberDTO;
 import com.its.member.entity.Board;
 import com.its.member.entity.Member;
 import com.its.member.repository.BoardRepository;
@@ -18,8 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service

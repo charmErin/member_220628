@@ -33,12 +33,16 @@ public class Member {
     @Column(length = 80)
     private String memberProfileName;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, orphanRemoval = false, fetch = FetchType.LAZY)
     List<Board> boardList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, orphanRemoval = false, fetch = FetchType.LAZY)
+    List<Comment> commentList = new ArrayList<>();
 
     @PreRemove
     private void preRemove() {
         boardList.forEach(board -> board.setMember(null));
+        commentList.forEach(comment -> comment.setMember(null));
     }
 
 

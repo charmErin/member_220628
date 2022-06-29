@@ -3,6 +3,7 @@ package com.its.member.controller;
 import com.its.member.common.PagingConst;
 import com.its.member.dto.BoardDTO;
 import com.its.member.service.BoardService;
+import com.its.member.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,7 @@ import java.util.List;
 @RequestMapping("/board")
 public class BoardController {
     private final BoardService bs;
+    private final CommentService cs;
 
     @GetMapping("/save-form")
     public String saveForm() {
@@ -49,6 +51,7 @@ public class BoardController {
                            @RequestParam Long id, Model model) {
         model.addAttribute("board", bs.findById(id));
         model.addAttribute("page", page);
+        model.addAttribute("commentList", cs.findAll(id));
         return "board/detail";
     }
 
