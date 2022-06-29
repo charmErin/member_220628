@@ -70,4 +70,22 @@ public class BoardController {
         return "redirect:/board/detail?id=" + boardDTO.getId();
     }
 
+    @GetMapping("/search")
+    public String search(@PageableDefault(page = 1) Pageable pageable,
+                         @RequestParam String choice,
+                         @RequestParam String q, Model model) {
+        System.out.println("choice: " + choice);
+        System.out.println("q: " + q);
+        Page<BoardDTO> boardList = bs.search(pageable, choice, q);
+
+        model.addAttribute("boardList", boardList);
+        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
+        int endPage = ((startPage + PagingConst.BLOCK_LIMIT - 1) < boardList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT - 1 : boardList.getTotalPages();
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("choice", choice);
+        model.addAttribute("q", q);
+        return "board/searchList";
+    }
+
 }

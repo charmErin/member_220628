@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <style>
+        .b_title {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<th:block th:replace="common/header :: header"></th:block>
+<div class="container col-9">
+    <form action="/board/search" method="get">
+        <select name="choice">
+            <option value="">선택</option>
+            <option value="boardTitle">제목</option>
+            <option value="boardWriter">작성자</option>
+        </select>
+        <input type="text" name="q">
+        <input type="submit" value="검색">
+    </form>
+    <h2>글목록</h2>
+    <div th:if="${!boardList.isEmpty()}">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">글번호</th>
+                <th scope="col">제목</th>
+                <th scope="col">작성자</th>
+                <th scope="col">작성일</th>
+                <th scope="col">조회수</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="board: ${boardList}">
+                <td th:text="${board.id}"></td>
+                <td class="b_title" th:onclick="boardDetail([[${board.id}]])" th:text="${board.boardTitle}"></td>
+                <td th:text="${board.boardWriter}"></td>
+                <td th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${board.boardHits}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="container">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link" th:href="@{|/board/search?choice=${choice}&q=${q}|}"><<</a>
+                </li>
+
+                <li th:class="${boardList.first} ? 'disabled'" class="page-item">
+                    <a class="page-link" th:href="${boardList.first} ? '#' : @{|/board/search?page=${boardList.number}&choice=${choice}&q=${q}|}">이전</a>
+                </li>
+
+                <li th:each="page: ${#numbers.sequence(startPage, endPage)}"
+                    th:class="${page == boardList.number + 1} ? 'page-item active'" class="page-item">
+                    <a class="page-link" th:text="${page}" th:href="@{|/board/search?page=${page}&choice=${choice}&q=${q}|}"></a>
+                </li>
+
+                <li th:class="${boardList.last} ? 'disabled'">
+                    <a class="page-link" th:href="${boardList.last} ? '#' : @{|/board/search?/page=${boardList.number + 2}&choice=${choice}&q=${q}|}">다음</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" th:href="@{|/board/search?page=${boardList.totalPages}&choice=${choice}&q=${q}|}">>></a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+    <div th:if="${boardList.isEmpty()}">
+        조회된 검색 결과가 없습니다.
+    </div>
+</div>
+</body>
+<script th:inline="javascript">
+    const boardDetail = (id) => {
+        const page = [[${boardList.number}]] + 1;
+        location.href = "/board/detail?page=" + page + "&id=" + id;
+    }
+</script>
+</html>

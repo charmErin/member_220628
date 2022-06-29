@@ -61,8 +61,8 @@ public class BoardService {
         Page<Board> boardList = br.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
         Page<BoardDTO> boardDTOList = boardList.map(
                 board -> new BoardDTO(board.getId(), board.getBoardTitle(), board.getBoardWriter(),
-                                        board.getBoardContents(), board.getBoardHits(), board.getUpdatedTime(),
-                                        board.getCreatedTime(), board.getBoardFileName())
+                                        board.getBoardContents(), board.getBoardHits(), board.getCreatedTime(),
+                                        board.getUpdatedTime(), board.getBoardFileName())
         );
         return boardDTOList;
     }
@@ -82,5 +82,32 @@ public class BoardService {
         }
         Member member = mr.findByMemberEmail(boardDTO.getBoardWriter()).get();
         br.save(Board.toUpdateEntity(boardDTO, member));
+    }
+
+    public Page<BoardDTO> search(Pageable pageable, String choice, String q) {
+        int page = pageable.getPageNumber();
+
+        page = (page==1) ? 0 : (page-1);
+
+        if (choice.equals("boardTitle")) {
+            Page<Board> boardList = br.findByBoardTitleContaining(q, PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+            Page<BoardDTO> boardDTOList = boardList.map(
+                    board -> new BoardDTO(board.getId(), board.getBoardTitle(), board.getBoardWriter(),
+                            board.getBoardContents(), board.getBoardHits(), board.getCreatedTime(),
+                            board.getUpdatedTime(), board.getBoardFileName())
+            );
+            return boardDTOList;
+        } else if(choice.equals("boardWriter")) {
+            Page<Board> boardList = br.findByBoardWriterContaining(q, PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+            Page<BoardDTO> boardDTOList = boardList.map(
+                    board -> new BoardDTO(board.getId(), board.getBoardTitle(), board.getBoardWriter(),
+                            board.getBoardContents(), board.getBoardHits(), board.getCreatedTime(),
+                            board.getUpdatedTime(), board.getBoardFileName())
+            );
+            return boardDTOList;
+        } else {
+            return null;
+        }
+
     }
 }

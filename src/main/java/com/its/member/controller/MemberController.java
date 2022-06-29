@@ -38,7 +38,7 @@ public class MemberController {
         if (loginDTO != null) {
             session.setAttribute("loginId", loginDTO.getId());
             session.setAttribute("loginEmail", loginDTO.getMemberEmail());
-            return "index";
+            return "redirect:/board";
         } else {
             return "member/login";
         }
