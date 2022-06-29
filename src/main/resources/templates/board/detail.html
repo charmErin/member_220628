@@ -82,14 +82,12 @@
                 <td th:text="${comment.commentWriter}"></td>
                 <td th:text="${comment.commentContents}"></td>
                 <td th:text="${comment.commentCreatedTime}"></td>
-                <div th:if="${#strings.equals(session.loginEmail, comment.commentWriter)}">
-                    <td th:if="${session.loginEmail.toString().equals('admin')}">
-                        <button th:onclick="commentDelete([[${comment.id}]])">삭제</button>
-                    </td>
-                    <td th:unless="${session.loginEmail.toString().equals('admin')}">
-                        <button th:onclick="commentDelete([[${comment.id}]])">삭제</button>
-                    </td>
-                </div>
+                <td th:if="${session.loginEmail.toString().equals('admin')}">
+                    <button th:onclick="commentDelete([[${comment.id}]])">삭제</button>
+                </td>
+                <td th:if="${#strings.equals(session.loginEmail, comment.commentWriter) and !session.loginEmail.toString().equals('admin')}">
+                    <button th:onclick="commentDelete([[${comment.id}]])">삭제</button>
+                </td>
             </tr>
         </table>
     </div>
@@ -135,15 +133,14 @@
                             + '<td>' + result[i].commentWriter + '</td>'
                             + '<td>' + result[i].commentContents + '</td>'
                             + '<td>' + result[i].commentCreatedTime + '</td>';
-                            if (commentWriter == result[i].commentWriter) {
-                                output += '<div>'
-                                    if (commentWriter == 'admin') {
-                                        output += '<td>' + '<button onclick="commentDelete(' + result[i].id + ')">삭제</button></td>';
-                                    } else {
-                                        output += '<td>' + '<button onclick="commentDelete(' + result[i].id + ')">삭제</button></td>';
-                                    }
-                                output += '</div></tr>';
+                            if (commentWriter == 'admin') {
+                                output += '<td>' + '<button onclick="commentDelete(' + result[i].id + ')">삭제</button></td>';
                             }
+                            if (commentWriter == result[i].commentWriter && commentWriter != ('admin')) {
+                                output += '<td>' + '<button onclick="commentDelete(' + result[i].id + ')">삭제</button></td>';
+                            }
+                            output += '</div></tr>';
+
                 }
                 output += '</table>';
 
@@ -176,15 +173,14 @@
                         + '<td>' + result[i].commentWriter + '</td>'
                         + '<td>' + result[i].commentContents + '</td>'
                         + '<td>' + result[i].commentCreatedTime + '</td>';
-                    if (commentWriter == result[i].commentWriter) {
-                        output += '<div>';
-                        if (commentWriter == 'admin') {
-                            output += '<td>' + '<button onclick="commentDelete(' + result[i].id + ')">삭제</button></td>';
-                        } else {
-                            output += '<td>' + '<button onclick="commentDelete(' + result[i].id + ')">삭제</button></td>';
-                        }
-                        output += '</div></tr>';
+                    if (commentWriter == 'admin') {
+                        output += '<td>' + '<button onclick="commentDelete(' + result[i].id + ')">삭제</button></td>';
                     }
+                    if (commentWriter == result[i].commentWriter && commentWriter != ('admin')) {
+                        output += '<td>' + '<button onclick="commentDelete(' + result[i].id + ')">삭제</button></td>';
+                    }
+                    output += '</div></tr>';
+
                 }
                 output += '</table>';
 
