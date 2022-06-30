@@ -84,4 +84,8 @@ public class MemberService {
             return null;
         }
     }
+
+    public void kakaoLogin(String authorizedCode) {
+//        KakaoMemberInfo memberInfo = kakaoAuth2.getUser
+    }
 }

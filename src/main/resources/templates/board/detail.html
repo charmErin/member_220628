@@ -124,8 +124,8 @@
                 let output = '';
                     output += '<table><tr>'
                             + '<th>댓글번호</th>'
-                            + '<th>내용</th>'
                             + '<th>작성자</th>'
+                            + '<th>내용</th>'
                             + '<th>작성일</th><th></th></tr>';
 
                 for (let i in result) {
@@ -145,7 +145,7 @@
                 output += '</table>';
 
                 commentList.innerHTML = output;
-                document.getElementById(commentContents).value = "";
+                document.getElementById("commentContents").value = "";
             }
         });
     }
@@ -164,8 +164,8 @@
                 let output = '';
                 output += '<table><tr>'
                     + '<th>댓글번호</th>'
-                    + '<th>내용</th>'
                     + '<th>작성자</th>'
+                    + '<th>내용</th>'
                     + '<th>작성일</th><th></th></tr>';
 
                 for (let i in result) {
@@ -185,6 +185,7 @@
                 output += '</table>';
 
                 commentList.innerHTML = output;
+                document.getElementById("commentContents").value = "";
             }
         });
     }

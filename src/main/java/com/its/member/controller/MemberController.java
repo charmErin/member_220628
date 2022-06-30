@@ -103,4 +103,13 @@ public class MemberController {
         return "member/list";
     }
 
+
+    // 카카오 로그인
+    @GetMapping("/kakao")
+    public String kakaoLogin(String code) {
+        // authorizeCode: 카카오 서버로부터 받은 인가 코드
+        ms.kakaoLogin(code);
+        return "redirect:/board";
+    }
+
 }
