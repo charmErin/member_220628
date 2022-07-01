@@ -89,6 +89,13 @@
                     <button th:onclick="commentDelete([[${comment.id}]])">삭제</button>
                 </td>
             </tr>
+<!--            <tr th:each="files: ${fileDTOList}">&ndash;&gt;-->
+<!--                <th>사진들</th>-->
+<!--                <td><img th:src="@{|/upload/${files.getBoardFileName}|}" width="100" height="100"></td>-->
+<!--            </tr>-->
+<!--            <tr th:each="files: ${boardDTO.boardFileList}">-->
+<!--                <td><img th:src="@{|/upload/${files.getBoardFileName()}|}" width="100" height="100"></td>-->
+<!--            </tr>-->
         </table>
     </div>
 </body>
