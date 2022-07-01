@@ -103,7 +103,14 @@ public class BoardService {
             );
             return boardDTOList;
         } else {
-            return findAll(pageable);
+            Page<Board> boardList = br.findByBoardTitleContainingOrBoardWriterContaining(q, q, PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+            Page<BoardDTO> boardDTOList = boardList.map(
+                    board -> new BoardDTO(board.getId(), board.getBoardTitle(), board.getBoardWriter(),
+                            board.getBoardContents(), board.getBoardHits(), board.getCreatedTime(),
+                            board.getUpdatedTime(), board.getBoardFileName())
+            );
+            System.out.println("boardDTOList = " + boardDTOList);
+            return boardDTOList;
         }
 
     }

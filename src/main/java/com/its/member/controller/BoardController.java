@@ -84,8 +84,6 @@ public class BoardController {
     public String search(@PageableDefault(page = 1) Pageable pageable,
                          @RequestParam String choice,
                          @RequestParam String q, Model model) {
-        System.out.println("choice: " + choice);
-        System.out.println("q: " + q);
         Page<BoardDTO> boardList = bs.search(pageable, choice, q);
 
         model.addAttribute("boardList", boardList);
