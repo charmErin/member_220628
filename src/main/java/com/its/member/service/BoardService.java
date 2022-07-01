@@ -107,4 +107,18 @@ public class BoardService {
         }
 
     }
+
+    public Page<BoardDTO> hitsDesc(Pageable pageable) {
+        int page = pageable.getPageNumber();
+
+        page = (page==1) ? 0 : (page-1);
+
+        Page<Board> boardList = br.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "boardHits")));
+        Page<BoardDTO> boardDTOList = boardList.map(
+                board -> new BoardDTO(board.getId(), board.getBoardTitle(), board.getBoardWriter(),
+                        board.getBoardContents(), board.getBoardHits(), board.getCreatedTime(),
+                        board.getUpdatedTime(), board.getBoardFileName())
+        );
+        return boardDTOList;
+    }
 }

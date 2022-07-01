@@ -2,8 +2,12 @@ package com.its.member.controller;
 
 import com.its.member.common.PagingConst;
 import com.its.member.dto.BoardDTO;
+import com.its.member.dto.FileDTO;
+import com.its.member.dto.NewBoardDTO;
 import com.its.member.service.BoardService;
 import com.its.member.service.CommentService;
+import com.its.member.service.FileService;
+import com.its.member.service.NewBoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,9 +15,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -90,5 +97,44 @@ public class BoardController {
         model.addAttribute("q", q);
         return "board/searchList";
     }
+
+    @GetMapping("/hitsDesc")
+    public String hitsDesc(@PageableDefault(page = 1) Pageable pageable, Model model) {
+        Page<BoardDTO> boardList = bs.hitsDesc(pageable);
+        model.addAttribute("boardList", boardList);
+        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
+        int endPage = ((startPage + PagingConst.BLOCK_LIMIT - 1) < boardList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT - 1 : boardList.getTotalPages();
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        return "board/listHitsDesc";
+    }
+
+//    private final NewBoardService boardFileService;
+//    private final FileService fileService;
+//
+//    @GetMapping("/fileSave-form")
+//    public String fileSaveForm() {
+//        return "board/fileSave";
+//    }
+//    @PostMapping("/fileSave")
+//    public String fileSave(@ModelAttribute NewBoardDTO boardFileDTO,
+//                           MultipartHttpServletRequest mp,
+//                           Model model) throws IOException {
+//        NewBoardDTO saveDTO = boardFileService.fileSave(boardFileDTO);
+//        List<MultipartFile> multipartFileList = mp.getFiles("boardFile");
+//
+//        List<FileDTO> fileDTOList = new ArrayList<>();
+//        for (MultipartFile m: multipartFileList) {
+//            FileDTO fileDTO = new FileDTO();
+//            fileDTO.setBoardId(saveDTO.getId());
+//            fileDTO.setBoardFile(m);
+//            fileDTOList.add(fileService.save(fileDTO));
+//        }
+//        saveDTO.setBoardFileList(fileDTOList);
+//        model.addAttribute("boardDTO", saveDTO);
+////        saveDTO.getBoardDTOList.get(i);
+////        model.addAttribute("fileDTOList", fileDTOList);
+//        return "board/detail";
+//    }
 
 }

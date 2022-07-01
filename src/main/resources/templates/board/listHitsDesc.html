@@ -49,23 +49,23 @@
     <div class="container">
         <ul class="pagination justify-content-center">
             <li class="page-item">
-                <a class="page-link" th:href="@{/board(page=1)}"><<</a>
+                <a class="page-link" th:href="@{/board/hitsDesc(page=1)}"><<</a>
             </li>
 
             <li th:class="${boardList.first} ? 'disabled'" class="page-item">
-                <a class="page-link" th:href="${boardList.first} ? '#' : @{/board(page=${boardList.number})}">이전</a>
+                <a class="page-link" th:href="${boardList.first} ? '#' : @{/board/hitsDesc(page=${boardList.number})}">이전</a>
             </li>
 
             <li th:each="page: ${#numbers.sequence(startPage, endPage)}"
                 th:class="${page == boardList.number + 1} ? 'page-item active'" class="page-item">
-                <a class="page-link" th:text="${page}" th:href="@{/board(page=${page})}"></a>
+                <a class="page-link" th:text="${page}" th:href="@{/board/hitsDesc(page=${page})}"></a>
             </li>
 
             <li th:class="${boardList.last} ? 'disabled'">
-                <a class="page-link" th:href="${boardList.last} ? '#' : @{/board(page=${boardList.number + 2})}">다음</a>
+                <a class="page-link" th:href="${boardList.last} ? '#' : @{/board/hitsDesc(page=${boardList.number + 2})}">다음</a>
             </li>
             <li class="page-item">
-                <a class="page-link" th:href="@{/board(page=${boardList.totalPages})}">>></a>
+                <a class="page-link" th:href="@{/board/hitsDesc(page=${boardList.totalPages})}">>></a>
             </li>
 
         </ul>

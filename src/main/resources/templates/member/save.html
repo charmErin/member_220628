@@ -36,7 +36,7 @@
             dataType: "text",
             success: function (result) {
                 if (result == "ok") {
-                    if (memberEmail != null) {
+                    if (memberEmail == '') {
                         dupIdCheck.innerHTML = "필수입력입니다.";
                         dupIdCheck.style.color = "dodgerblue";
                     }else {
