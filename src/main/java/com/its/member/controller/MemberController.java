@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
 
 @Controller
 @RequiredArgsConstructor
@@ -106,10 +107,39 @@ public class MemberController {
 
     // 카카오 로그인
     @GetMapping("/kakao")
-    public String kakaoLogin(String code) {
-        // authorizeCode: 카카오 서버로부터 받은 인가 코드
-        ms.kakaoLogin(code);
-        return "redirect:/board";
+    public String kakaoLogin(@RequestParam String code, HttpSession session) {
+        System.out.println("code : " + code);
+
+        String access_Token = ms.kakaoLogin(code);
+        System.out.println("access_Token : " + access_Token);
+
+        HashMap<String, Object> userInfo = ms.createKakaoUser(access_Token);
+        System.out.println("login Controller : " + userInfo);
+
+        //    클라이언트의 이메일이 존재할 때 세션에 해당 이메일과 토큰 등록
+        if (userInfo.get("email") != null) {
+            session.setAttribute("userId", userInfo.get("email"));
+            session.setAttribute("access_Token", access_Token);
+        }
+
+        return "index";
     }
+
+    // 카카오 로그아웃
+    @GetMapping("/kakao/logout")
+    public String kakaoLogout(HttpSession session) {
+        String access_Token = (String)session.getAttribute("access_Token");
+
+        if(access_Token != null && !"".equals(access_Token)){
+            ms.kakaoLogout(access_Token);
+            session.removeAttribute("access_Token");
+            session.removeAttribute("userId");
+        }else{
+            System.out.println("access_Token is null");
+            //return "redirect:/";
+        }
+        return "index";
+    }
+
 
 }

@@ -16,6 +16,13 @@
         이메일 <input type="text" name="memberEmail">
         비밀번호 <input type="text" name="memberPassword">
         <input type="submit" value="로그인">
+        <input type="button" th:onclick="kakaoLogin()" value="카카오로그인">
     </form>
 </body>
+<script th:inline="javascript">
+    // const kakaoLogin = () => {
+    //
+    //     location.href = "kauth.kakao.com/oauth/authorize?client_id=" + REST_API_KEY + "&redirect_uri=" + REDIRECT_URI + "&response_type=" + code;
+    // }
+</script>
 </html>
