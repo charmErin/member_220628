@@ -103,7 +103,7 @@ public class BoardService {
             );
             return boardDTOList;
         } else {
-            return null;
+            return findAll(pageable);
         }
 
     }
